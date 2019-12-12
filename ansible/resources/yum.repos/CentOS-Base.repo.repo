@@ -1,0 +1,16 @@
+[ee-rpm-linsee-production]
+name = Red Hat Enterprise $releasever - EE RPM-LinSEE production
+baseurl =
+  http://oulina10.emea.nsn-net.net/repository/SEE/linsee/production/rhel6/$basearch
+  http://eslina10.emea.nsn-net.net/repository/SEE/linsee/production/rhel6/$basearch
+enabled = 1
+gpgcheck = 0
+
+[ee-rpm-linsee-pilot]
+name = Red Hat Enterprise $releasever - EE RPM-LinSEE pilot
+baseurl =
+  http://oulina10.emea.nsn-net.net/repository/SEE/linsee/pilot/rhel6/$basearch
+  http://eslina10.emea.nsn-net.net/repository/SEE/linsee/pilot/rhel6/$basearch
+enabled = 1
+gpgcheck = 0
+

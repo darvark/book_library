@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Book order</title>
+  </head>
+  <body>
+    {% extends "template.html" %}
+    {% block content %}
+    
+    <h3> Create book request </h3>
+    <p class="bottom-three">
+      <!-- formularz skladania zamowienia na ksiazke -->
+            <!-- tutaj pojdzie formularz wyszkuiwania ksiazek -->
+            <form action="" method="post" name="search">
+                <div class="field">
+                  <label for="title" class="label">Book ID</label>
+                  <div class="control">
+                    <input type="text" name="bookid" class="input" required="required"/>
+                  </div>
+                </div>
+        
+                <div class="field">
+                    <label for="title" class="label">Name</label>
+                    <div class="control">
+                      <input type="text" name="name" class="input" required="required"/>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label for="title" class="label">Surname</label>
+                    <div class="control">
+                      <input type="text" name="surname" class="input" required="required"/>
+                    </div>
+                  </div>
+
+                <div class="field is-grouped">
+                  <div class="control">
+                    <button class="button is-primary is-small" onclick="order()">Order</button>
+                  </div>
+                </div>
+              </form>
+    </p>
+    {% if text %}
+    {{ text | safe }}
+    {% endif %}
+    {% endblock %}
+  </body>
+</html>

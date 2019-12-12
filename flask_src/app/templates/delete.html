@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Admin</title>
+  </head>
+  <body>
+    {% extends "template.html" %}
+    {% block content %}
+    <div class="header">
+        <div class="links"><a href="{{ url_for('update') }}">Update</a></div>
+        <div class="links"><a href="{{ url_for('delete') }}">Delete</a></div>
+        <div class="links"><a href="{{ url_for('add') }}">Add</a></div>
+        <div class="links"><a href="{{ url_for('user') }}">User</a></div>
+        <div class="links"><a href="{{ url_for('admin') }}">Admin</a></div>
+    </div>
+    <h3> Administrator page </h3>
+    <p class="bottom-three"></p>
+
+    <h3>Delete book</h3>
+    <form action="" method="post" name="search">
+        <div class="field">
+          <label for="title" class="label">Book ID</label>
+          <div class="control">
+            <input type="text" name="bookid" class="input" required="required"/>
+          </div>
+        </div>
+     
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-primary is-small" onclick="delete()">Delete</button>
+          </div>
+        </div>
+      </form>
+    {% if text %}
+    {{ text | safe }}
+    {% endif %}
+    {% endblock %}
+  </body>
+</html>

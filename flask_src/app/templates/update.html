@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Admin</title>
+  </head>
+  <body>
+    {% extends "template.html" %}
+    {% block content %}
+    <div class="header">
+        <div class="links"><a href="{{ url_for('update') }}">Update</a></div>
+        <div class="links"><a href="{{ url_for('delete') }}">Delete</a></div>
+        <div class="links"><a href="{{ url_for('add') }}">Add</a></div>
+        <div class="links"><a href="{{ url_for('user') }}">User</a></div>
+        <div class="links"><a href="{{ url_for('admin') }}">Admin</a></div>
+    </div>
+    <h3> Administrator page </h3>
+    <p class="bottom-three"></p>
+
+    <h3>Update book</h3>
+    <form action="" method="post" name="search">
+        <div class="field">
+            <label for="title" class="label">Id</label>
+            <div class="control">
+              <input type="text" name="bookid" class="input" />
+            </div>
+          </div>
+        <div class="field">
+          <label for="title" class="label">Title</label>
+          <div class="control">
+            <input type="text" name="title" class="input" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="title" class="label">Author(s)</label>
+          <div class="control">
+            <input type="text" name="author" class="input" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="title" class="label">Publisher</label>
+          <div class="control">
+            <input type="text" name="publisher" class="input" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="title" class="label">Book Owner</label>
+          <div class="control">
+            <input type="text" name="book_owner" class="input" />
+          </div>
+        </div>
+        <div class="field">
+            <label for="title" class="label">ISBN</label>
+            <div class="control">
+              <input type="text" name="isbn" class="input" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="title" class="label">Pages</label>
+            <div class="control">
+              <input type="text" name="pages" class="input" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="title" class="label">Genre</label>
+            <div class="control">
+              <input type="text" name="category" class="input" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="title" class="label">Description</label>
+            <div class="control">
+              <input type="text" name="description" class="input" />
+            </div>
+          </div>
+
+          <label for="title" class="label">State</label>
+            <div class="control">
+              <select class="form-control" id="state" name="state">
+                  <option value="Available">Available</option>
+                  <option value="Rent">Rent</option>
+              </select>
+            </div>
+
+        <div class="field is-grouped">
+          <div class="control">
+            <button class="button is-primary is-small" onclick="update()">Update</button>
+          </div>
+        </div>
+      </form>
+   
+    {% if text %}
+    {{ text | safe }}
+    {% endif %}
+    {% endblock %}
+  </body>
+</html>

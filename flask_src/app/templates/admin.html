@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Admin</title>
+  </head>
+  <body>
+    {% extends "template.html" %}
+    {% block content %}
+    
+    <div class="header">
+        <div class="links"><a href="{{ url_for('update') }}">Update</a></div>
+        <div class="links"><a href="{{ url_for('delete') }}">Delete</a></div>
+        <div class="links"><a href="{{ url_for('add') }}">Add</a></div>
+        <div class="links"><a href="{{ url_for('user') }}">User</a></div>
+        <div class="links"><a href="{{ url_for('admin') }}">Admin</a></div>
+      </div>
+    {% endblock %}
+  </body>
+</html>
