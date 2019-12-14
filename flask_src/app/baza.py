@@ -76,16 +76,18 @@ class Order(Base):
     order_date = Column(Date)
     return_date = Column(Date)
     rent_date = Column(Date)
+    status = Column(String)
 
     def __repr__(self):
         return (
-            "book_id='%d', reader_id='%d', order_dater='%s', return_date='%s', rent_date='%s'"
+            "book_id='%d', reader_id='%d', order_dater='%s', return_date='%s', rent_date='%s', status='%s'"
             % (
                 self.book_id,
                 self.reader_id,
                 self.order_date,
                 self.return_date,
                 self.rent_date,
+                self.status
             )
         )
 
@@ -178,6 +180,47 @@ class Baza:
         print(return_list)
         return return_list
 
+    def show_orders(self):
+        """
+        """
+
+        s = self.session.query(Order).filter(Order.status == 'Active').all()
+
+        table_header = '<table style="width: 80%;" border="1">\
+                        <tbody>\
+                        <tr>\
+                        <td>No.</td>\
+                        <td>Book title</td>\
+                        <td>Reader Name</td>\
+                        <td>Reader Surname</td>\
+                        <td>Order date</td>\
+                        <td>Return date</td>\
+                        <td>Rent date</td>\
+                        <td>Status</td>\
+                        </tr>'
+        table_footer = "</tbody></table>"
+
+        return_list = table_header
+
+        for item in s:
+
+            b = self.session.query(Book).filter(Book.id == item.book_id).first()
+            r = self.session.query(Reader).filter(Reader.id == item.reader_id).first()
+            return_list += "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
+                str(item.id),
+                b.title,
+                r.name,
+                r.surname,
+                item.order_date,
+                item.return_date,
+                item.rent_date,
+                item.status
+            )
+
+        return_list += table_footer
+        print(return_list)
+        return return_list
+
     def add_book(self, params):
         """
         """
@@ -233,6 +276,7 @@ class Baza:
             order_date=date.now(),
             return_date=date.now() + timedelta(days=60),
             rent_date=date.now(),
+            status='Active'
         )
 
         self.session.add(req)
@@ -245,9 +289,21 @@ class Baza:
         updates book status.
         """
 
-        book = self.session.query(Book).filter(id == bookID)
+        book = self.session.query(Book).filter(Book.id == bookID).one()
         book.state = newState
         self.session.commit()
+
+    def return_book(self, rentID):
+        """
+        updates book status after return.
+        """
+
+        order = self.session.query(Order).filter(and_(Order.id == rentID, Order.status == 'Active')).one()
+        book = self.session.query(Book).filter(Book.id == order.book_id).one()
+        book.state = 'Available'
+        order.status = 'Closed'
+        self.session.commit()
+
 
     def delete_book(self, bookid):
         """
@@ -332,68 +388,62 @@ class Baza:
         return_list += table_footer
         return return_list
 
-    #################################################
-    def dry_test(self):
-        """
-        """
 
-        book1 = Book(
-            title="Szczerze",
-            author="Tusk Donald",
-            publisher="Agora",
-            book_owner="Empik",
-            isbn=33965284,
-            pages=250,
-            category="Biography",
-            description="",
-            state="Dostepna",
+# Helpers
+### THOSE ONEs DOENST HAVE SENSE TO BE EXTRACTED OUTSIDE FUCNTION. THEY ARE USED ONLY IN ONE FUNCTION EACH.
+def book_table_header():
+    return '<table style="width: 80%;" border="1">\
+            <tbody>\
+            <tr>\
+            <td>No.</td>\
+            <td>Title</td>\
+            <td>Author</td>\
+            <td>Publisher</td>\
+            <td>Book Owner</td>\
+            <td>ISBN</td>\
+            <td>Pages</td>\
+            <td>Genre</td>\
+            <td>Details</td>\
+            <td>Status</td>\
+            </tr>'
+
+
+def book_table_row(item):
+    """
+    """
+    row = "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
+            str(item.id),
+            item.title,
+            item.author,
+            item.publisher,
+            item.book_owner,
+            str(item.isbn),
+            str(item.pages),
+            item.category,
+            item.description,
+            item.state,
+        )
+    return row
+
+def user_table_header():
+    return '<table style="width: 80%;" border="1">\
+            <tbody>\
+            <tr>\
+            <td>No.</td>\
+            <td>Name</td>\
+            <td>surname</td>\
+            <td>Mail</td>\
+            <td>Phone</td>\
+            </tr>'
+
+def user_table_row(item):
+    return "<tr><td>{}</td><td>{}</td><td>{}</td><td>{}</td><td>{}</td></tr>".format(
+            str(item.id),
+            item.name,
+            item.surname,
+            item.mail,
+            str(item.phone),
         )
 
-        book2 = Book(
-            author="Petitcollin Christel",
-            title="Jak mniej myśleć. Dla analizujących bez końca i wysoko wrażliwych",
-            publisher="Feeria",
-            book_owner="Empik",
-            isbn=31560139,
-            pages=232,
-            category="Psychology",
-            description="",
-            state="Dostepna",
-        )
+table_footer = "</tbody></table>"
 
-        reader1 = Reader(
-            name="Marcin",
-            surname="Iwaniuk",
-            mail="MIwaniuk@luxoft.com",
-            phone=503866282,
-        )
-
-        self.session.add(book1)
-        self.session.add(book2)
-        self.session.add(reader1)
-        self.session.commit()
-
-        zam = Order(
-            book_id=book2.id,
-            reader_id=reader1.id,
-            order_date=date(2019, 12, 6),
-            return_date=date(2020, 2, 14),
-            rent_date=date(2019, 12, 29),
-        )
-        self.session.add(zam)
-        self.session.commit()
-
-        s = self.session.query(Book).all()
-        print(s)
-
-
-# q = session.query(Order).first()
-# # print(dir(Order))
-# # print(dir(q))
-# b = session.query(Book).filter(Book.id == q.book_id).first()
-# r = session.query(Reader).filter(Reader.id == q.reader_id).first()
-# print(b.title)
-# print(r.name)
-# print(q.order_date)
-# print(q.return_date)
-# print(q.rent_date)

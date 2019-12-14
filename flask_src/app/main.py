@@ -80,6 +80,8 @@ def update():
     """
     """
 
+    b = baza.Baza()
+
     if request.method == "POST":
         params = {}
         params["title"] = request.form.get("title")
@@ -92,11 +94,10 @@ def update():
         params["description"] = request.form.get("description")
         params["state"] = request.form.get("state")
 
-        b = baza.Baza()
         b.update_book(request.form.get("bookid"), params)
 
-        return render_template("update.html")
-    return render_template("update.html")
+        return render_template("update.html", text=b.show_books())
+    return render_template("update.html", text=b.show_books())
 
 
 @app.route("/delete", methods=["POST", "GET"])
@@ -140,6 +141,19 @@ def books():
     # b.dry_test()
     return render_template("books.html", text=b.show_books())
 
+@app.route("/orders", methods=["POST", "GET"])
+def orders():
+    """
+    """
+
+    b = baza.Baza()
+    if request.method == "POST":
+        b.return_book(request.form.get('rentid'))
+    
+        return render_template("orders.html", text=b.show_orders())
+
+    # b.dry_test()
+    return render_template("orders.html", text=b.show_orders())
 
 if __name__ == "__main__":
     from os import path, walk
@@ -153,4 +167,4 @@ if __name__ == "__main__":
                 filename = path.join(dirname, filename)
                 if path.isfile(filename):
                     extra_files.append(filename)
-    app.run(extra_files=extra_files)
+    app.run(extra_files=extra_files, host='0.0.0.0')

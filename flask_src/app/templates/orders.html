@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Admin</title>
+    <title>Orders</title>
   </head>
   <body>
     {% extends "template.html" %}
@@ -15,24 +15,26 @@
         <div class="links"><a href="{{ url_for('user') }}">User</a></div>
         <div class="links"><a href="{{ url_for('admin') }}">Admin</a></div>
     </div>
-    <h3> Administrator page </h3>
-    <p class="bottom-three"></p>
-
-    <h3>Delete book</h3>
+    <h3>Return book</h3>
     <form action="" method="post" name="search">
         <div class="field">
-          <label for="title" class="label">Book ID</label>
+          <label for="title" class="label">Rent ID</label>
           <div class="control">
-            <input type="text" name="bookid" class="input" required="required"/>
+            <input type="text" name="rentid" class="input" required="required"/>
           </div>
         </div>
      
         <div class="field is-grouped">
           <div class="control">
-            <button class="button is-primary is-small" onclick="delete()">Delete</button>
+            <button class="button is-primary is-small" onclick="orders()">Return</button>
           </div>
         </div>
       </form>
+
+
+    <h3>Complete orders list </h3>
+    <p class="bottom-three"></p>
+
     {% if text %}
     {{ text | safe }}
     {% endif %}
