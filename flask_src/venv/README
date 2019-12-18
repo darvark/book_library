@@ -1,2 +1,0 @@
-install dependencies: npm  install
-run the app: DEBUG=biblioteka-firmowa:* npm start
