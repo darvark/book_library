@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/lib_styles.css') }}">
+        <title>{% block title %}{% endblock %}</title>
+    </head>
+
+    <body>
+        <h1 class="logo">Luxoft Internal Library sYstem - LILY</h1>
+        <div class="topnav">
+            {% block topnav %}
+            {% endblock %}
+        </div>
+
+        {% block content %}
+        {% endblock %}
+
+    </body>
+</html>

@@ -1,0 +1,30 @@
+{% extends "template_user.html" %}
+{% block title %}
+Search
+{% endblock %}
+
+{% block content %}
+
+<h3> Here you can search our book database </h3>
+<p>
+  <!-- tutaj pojdzie formularz wyszkuiwania ksiazek -->
+  <form action="" method="post" name="search">
+    <div class="field">
+      <label for="title" class="label">Search</label>
+      <div class="control">
+        <input type="text" name="search" class="input" required="required"/>
+      </div>
+    </div>
+
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-primary is-small" onclick="search()">Search</button>
+      </div>
+    </div>
+  </form>
+</p>  
+
+{% if text %}
+{{ text | safe }}
+{% endif %}
+{% endblock %}

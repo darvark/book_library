@@ -1,0 +1,44 @@
+{% extends "template_user.html" %}
+{% block title %}
+Books wishlist
+{% endblock %}
+
+{% block content %}
+
+<h3> Create book request </h3>
+<p>
+  <!-- formularz skladania zamowienia na ksiazke -->
+        <!-- tutaj pojdzie formularz wyszkuiwania ksiazek -->
+        <form action="" method="post" name="search">
+            <div class="field">
+              <label for="title" class="label">Title</label>
+              <div class="control">
+                <input type="text" name="title" class="input" required="required"/>
+              </div>
+            </div>
+    
+            <div class="field">
+                <label for="title" class="label">Author</label>
+                <div class="control">
+                  <input type="text" name="author" class="input" required="required"/>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="title" class="label">Publisher</label>
+                <div class="control">
+                  <input type="text" name="publisher" class="input" required="required"/>
+                </div>
+              </div>
+
+            <div class="field is-grouped">
+              <div class="control">
+                <button class="button is-primary is-small" onclick="order()">Add to wishlist</button>
+              </div>
+            </div>
+          </form>
+</p>
+{% if text %}
+{{ text | safe }}
+{% endif %}
+{% endblock %}

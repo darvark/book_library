@@ -1,0 +1,31 @@
+{% extends "template_admin.html" %}
+{% block title %}
+Orders
+{% endblock %}
+
+{% block content %}
+
+<h3>Return book</h3>
+<form action="" method="post" name="search">
+    <div class="field">
+      <label for="title" class="label">Rent ID</label>
+      <div class="control">
+        <input type="text" name="rentid" class="input" required="required"/>
+      </div>
+    </div>
+  
+    <div class="field is-grouped">
+      <div class="control">
+        <button class="button is-primary is-small" onclick="orders()">Return</button>
+      </div>
+    </div>
+  </form>
+
+
+<h3>Complete orders list </h3>
+<p></p>
+
+{% if text %}
+{{ text | safe }}
+{% endif %}
+{% endblock %}
