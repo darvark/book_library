@@ -1,14 +1,14 @@
+{% extends "template_user.html" %}
+{% block title %}
+Books
+{% endblock %}
 
-  {% extends "template_user.html" %}
-  {% block title %}
-  Books
-  {% endblock %}
-  
-  {% block content %}
-  <h3>Book catalogue</h3>
-  <p></p>
+{% block content %}
+    <p></p>
+    <h3>Book catalogue</h3>
+    <p></p>
+    <table id="table" class="display">
+    </table>
+    <script type="text/javascript" src="{{ url_for('static', filename='books.js') }}"></script>
 
-  {% if text %}
-  {{ text | safe }}
-  {% endif %}
-  {% endblock %}
+{% endblock %}

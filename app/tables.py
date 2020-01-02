@@ -30,6 +30,14 @@ class Reader(Base):
             self.phone,
         )
 
+    def serialized(self):
+        return ({
+            "user_id": self.id,
+            "name": self.name,
+            "surname": self.surname,
+            "mail": self.mail,
+            "phone": self.phone
+        })
 
 class Book(Base):
     """
@@ -69,6 +77,20 @@ class Book(Base):
                 )
         )
 
+        
+    def serialized(self):
+        return ({
+            "book_id": self.id,
+            "title": self.title,
+            "author": self.author,
+            "publisher": self.publisher,
+            "book_owner": self.book_owner,
+            "isbn": self.isbn,
+            "pages": self.pages,
+            "category": self.category,
+            "description": self.description,
+            "state": self.state,
+        })
 
 class Order(Base):
     """

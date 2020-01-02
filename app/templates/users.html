@@ -1,0 +1,15 @@
+
+    {% extends "template_admin.html" %}
+    {% block title %}
+    User
+    {% endblock %}
+
+    {% block content %}
+        <p></p>
+        <h3>Users</h3>
+        <p></p>
+        <table id="table" class="display">
+        </table>
+        <script type="text/javascript" src="{{ url_for('static', filename='users.js') }}"></script>
+
+    {% endblock %}

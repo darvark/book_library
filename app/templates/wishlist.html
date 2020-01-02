@@ -40,5 +40,10 @@ Books wishlist
 </p>
 {% if text %}
 {{ text | safe }}
+<script>
+  $(document).ready( function () {
+      $('#table').DataTable();
+  } );
+</script>
 {% endif %}
 {% endblock %}

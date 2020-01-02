@@ -1,13 +1,13 @@
+from flask import Flask
+from flask import render_template
+from flask import request, json
+
 import baza
 import test_data
 
-from flask import Flask
-from flask import render_template
-from flask import request
-
 app = Flask(__name__)
 
-test_data.add_test_data()
+# test_data.add_test_data()
 
 @app.route("/")
 def home():
@@ -15,19 +15,7 @@ def home():
     """
 
     return render_template("home.html")
-
-
-@app.route("/search", methods=["POST", "GET"])
-def search():
-    """
-    """
-
-    if request.method == "POST":
-        item = request.form.get("search")
-        b = baza.Baza()
-        return render_template("search.html", text=b.search(item))
-    return render_template("search.html", text="Run query")
-
+    
 
 @app.route("/order", methods=["POST", "GET"])
 def order():
@@ -55,73 +43,82 @@ def admin():
     return render_template("admin.html")
 
 
-@app.route("/add", methods=["POST", "GET"])
-def add():
+@app.route("/books")
+def books():
     """
     """
-
-    if request.method == "POST":
-        params = {}
-        params["title"] = request.form.get("title")
-        params["author"] = request.form.get("author")
-        params["publisher"] = request.form.get("publisher")
-        params["owner"] = request.form.get("book_owner")
-        params["isbn"] = request.form.get("isbn")
-        params["pages"] = request.form.get("pages")
-        params["category"] = request.form.get("category")
-        params["description"] = request.form.get("description")
-        params["state"] = request.form.get("state")
-
-        b = baza.Baza()
-        b.add_book(params)
-
-        return render_template("add.html", text="New book was added to database")
-    return render_template("add.html")
+    return render_template("books.html")
 
 
-@app.route("/update", methods=["POST", "GET"])
-def update():
-    """
-    """
+@app.route("/api/books", methods=["POST", "GET"])
+def get_books():
+    b = baza.Baza()
+    return json.jsonify({"books": b.get_all_books()})
+
+
+@app.route("/book/add", methods=["POST"])
+def add_book():
+    params = {}
+    params["title"] = request.form.get("title")
+    params["author"] = request.form.get("author")
+    params["publisher"] = request.form.get("publisher")
+    params["owner"] = request.form.get("book_owner")
+    params["isbn"] = request.form.get("isbn")
+    params["pages"] = request.form.get("pages")
+    params["category"] = request.form.get("category")
+    params["description"] = request.form.get("description")
+    params["state"] = request.form.get("state")
 
     b = baza.Baza()
+    book = b.add_book(params)
 
-    if request.method == "POST":
-        params = {}
-        params["title"] = request.form.get("title")
-        params["author"] = request.form.get("author")
-        params["publisher"] = request.form.get("publisher")
-        params["owner"] = request.form.get("book_owner")
-        params["isbn"] = request.form.get("isbn")
-        params["pages"] = request.form.get("pages")
-        params["category"] = request.form.get("category")
-        params["description"] = request.form.get("description")
-        params["state"] = request.form.get("state")
-
-        b.update_book(request.form.get("bookid"), params)
-
-        return render_template("update.html", text=b.show_books())
-    return render_template("update.html", text=b.show_books())
+    return json.jsonify(book)
 
 
-@app.route("/delete", methods=["POST", "GET"])
+@app.route("/book/edit", methods=["POST"])
+def edit_book():
+    params = {}
+    params["title"] = request.form.get("title")
+    params["author"] = request.form.get("author")
+    params["publisher"] = request.form.get("publisher")
+    params["owner"] = request.form.get("book_owner")
+    params["isbn"] = request.form.get("isbn")
+    params["pages"] = request.form.get("pages")
+    params["category"] = request.form.get("category")
+    params["description"] = request.form.get("description")
+    params["state"] = request.form.get("state")
+
+    b = baza.Baza()
+    book = b.update_book(request.form.get("book_id"), params)
+    return json.jsonify(book)
+
+
+@app.route("/book/delete", methods=["DELETE"])
 def delete():
     """
     """
 
-    if request.method == "POST":
+    if request.method == "DELETE":
         b = baza.Baza()
-        b.delete_book(request.form.get("bookid"))
-
-        return render_template("delete.html")
-    return render_template("delete.html")
+        book = b.delete_book(request.form.get("book_id"))
+        return json.jsonify(book)
 
 
-@app.route("/user", methods=["POST", "GET"])
-def user():
+@app.route("/users", methods=["POST", "GET"])
+def users():
     """
     """
+    return render_template("users.html")
+
+
+@app.route("/api/users", methods=["POST", "GET"])
+def get_users():
     b = baza.Baza()
+    return json.jsonify({"users": b.get_all_readers()})
+
+
+@app.route("/user/add", methods=["POST"])
+def add_user():
     if request.method == "POST":
         params = {}
         params['name'] = request.form.get('name')
@@ -129,20 +126,37 @@ def user():
         params['mail'] = request.form.get('mail')
         params['phone'] = request.form.get('phone')
 
-        b.add_reader(params)
+        b = baza.Baza()
+        user = b.add_reader(params)
 
-        return render_template("user.html", text=b.show_users())
-    return render_template("user.html", text=b.show_users())
+        return json.jsonify(user)
 
 
-@app.route("/books")
-def books():
+@app.route("/user/edit", methods=["POST"])
+def edit_user():
+    if request.method == "POST":
+        params = {}
+        params['name'] = request.form.get('name')
+        params['surname'] = request.form.get('surname')
+        params['mail'] = request.form.get('mail')
+        params['phone'] = request.form.get('phone')
+
+        b = baza.Baza()
+        user = b.update_reader(request.form.get("user_id"), params)
+        
+        return json.jsonify(user)
+
+
+@app.route("/user/delete", methods=["DELETE"])
+def delete_user():
     """
     """
 
-    b = baza.Baza()
-
-    return render_template("books.html", text=b.show_books())
+    if request.method == "DELETE":
+        b = baza.Baza()
+        user = b.delete_reader(request.form.get("user_id"))
+        
+        return json.jsonify(user)
 
 
 @app.route("/orders", methods=["POST", "GET"])
@@ -189,4 +203,4 @@ if __name__ == "__main__":
                 filename = path.join(dirname, filename)
                 if path.isfile(filename):
                     extra_files.append(filename)
-    app.run(extra_files=extra_files, host='0.0.0.0', debug=True)
+    app.run(extra_files=extra_files, debug=True)
